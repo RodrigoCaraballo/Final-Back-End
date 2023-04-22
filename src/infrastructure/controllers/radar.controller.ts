@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Param, Patch } from '@nestjs/common'
 import { Observable, catchError } from 'rxjs';
-import { CreateRadarUseCase } from '../../application';
+import { CreateRadarUseCase, AddCriteriaUseCase } from '../../application';
 import { RadarDTO, RadarModel } from '../../domain';
 
 @Controller('radar')
@@ -8,6 +8,7 @@ export class RadarController {
 
     constructor(
         private readonly createRadarUseCase: CreateRadarUseCase,
+        private readonly addCriteriaUseCase: AddCriteriaUseCase,
     ) { }
 
     @Post('create-radar')
@@ -21,8 +22,8 @@ export class RadarController {
     }
 
     @Patch('add-criteria/:idRadar')
-    addCriteria(@Param() idRadar: string): Observable<RadarModel> {
-        return this.loginUseCase.execute(uid)
+    addCriteria(@Param() idRadar: string, @Body() idCriteria: string): Observable<RadarModel> {
+        return this.addCriteriaUseCase.execute(idRadar, idCriteria)
             .pipe(
                 catchError(error => {
                     throw new Error(error.message);
