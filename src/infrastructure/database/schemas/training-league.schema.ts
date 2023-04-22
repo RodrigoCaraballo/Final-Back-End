@@ -43,4 +43,4 @@ export class TrainingLeague {
 
 }
 
-export const UserSchema = SchemaFactory.createForClass(TrainingLeague);
+export const TrainingLeagueSchema = SchemaFactory.createForClass(TrainingLeague);

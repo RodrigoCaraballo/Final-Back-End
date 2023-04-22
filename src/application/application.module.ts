@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
 import { DatabaseModule } from "src/infrastructure";
-import { LoginUseCase, RegisterUseCase } from "./use-cases";
+import { AddCriteriaUseCase, CreateRadarUseCase, LoginUseCase, RegisterUseCase } from "./use-cases";
 
 @Module({
     imports: [DatabaseModule],
-    providers: [LoginUseCase, RegisterUseCase],
-    exports: [LoginUseCase, RegisterUseCase]
+    providers: [LoginUseCase, RegisterUseCase, CreateRadarUseCase, AddCriteriaUseCase],
+    exports: [LoginUseCase, RegisterUseCase, CreateRadarUseCase, AddCriteriaUseCase]
   })
 export class ApplicationModule {}
