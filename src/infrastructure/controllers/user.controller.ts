@@ -13,7 +13,7 @@ export class LoginController {
 
     //Change the UserCommand to a DTO
     @Post('login/:uid')
-    loginUser(@Param() uid: string): Observable<string> {
+    loginUser(@Param("uid") uid: string): Observable<string> {
         return this.loginUseCase.execute(uid)
             .pipe(
                 catchError(error => {

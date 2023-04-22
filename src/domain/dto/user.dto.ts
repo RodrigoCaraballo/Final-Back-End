@@ -4,6 +4,6 @@ export interface UserDTO {
     uid: string;
     email: string;
     name: string;
-    activate: boolean; 
+    activate?: boolean; 
     role?: RolesEnum
 }
