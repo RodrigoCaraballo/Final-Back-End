@@ -6,7 +6,7 @@ import { UserRepository, RadarRepository } from './repositories';
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb+srv://rodrigocaraballo:rodri007@cluster0.fzcprav.mongodb.net/final-back?retryWrites=true&w=majority'),
+        MongooseModule.forRoot('mongodb+srv://rodrigocaraballo:rodri007@cluster0.fzcprav.mongodb.net/final-back-christian?retryWrites=true&w=majority'),
         MongooseModule.forFeature([
           { name: User.name, schema: UserSchema },
           { name: Radar.name, schema: RadarSchema },
