@@ -38,6 +38,7 @@ export class RadarController {
             )
     }
 
+    @UseGuards(LiderGuard)
     @Patch('add-criteria/:idRadar/:idCriteria')
     addCriteria(
         @Param('idRadar') idRadar: string,
