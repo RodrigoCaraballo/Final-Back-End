@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { Observable, catchError, from, map, of, switchMap } from "rxjs";
 import { Model } from "mongoose";
+const { ObjectId } = require('mongodb');
+
 
 import { RadarDTO, RadarModel, IRadarRepository } from "../../../domain";
 import { Radar, RadarDocument } from "../schemas/radar.schema";
@@ -27,10 +29,9 @@ export class RadarRepository implements IRadarRepository {
     }
 
     addCriteria(idRadar: string, idCriteria: string): Observable<RadarModel> {
-        const filter = { _id: idRadar };
         const update = { criteria: idCriteria};
-        return from(this.repository.findOneAndUpdate(
-            filter,
+        return from(this.repository.findByIdAndUpdate(
+            idRadar,
             { $push: update },
             { new: true },
         )).pipe(

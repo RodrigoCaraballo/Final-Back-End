@@ -26,8 +26,11 @@ export class RadarController {
             )
     }
 
-    @Patch('add-criteria/:idRadar')
-    addCriteria(@Param() idRadar: string, @Body() idCriteria: string): Observable<RadarModel> {
+    @Patch('add-criteria/:idRadar/:idCriteria')
+    addCriteria(
+        @Param('idRadar') idRadar: string,
+        @Param('idCriteria') idCriteria: string
+    ): Observable<RadarModel> {
         return this.addCriteriaUseCase.execute(idRadar, idCriteria)
             .pipe(
                 catchError(error => {
