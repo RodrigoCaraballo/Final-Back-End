@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 
-import { AddRadarDTO } from "../../../domain";
+import { AddRadarDTO, RadarDTO } from "../../../domain";
 
 
 @Injectable()
@@ -11,7 +11,13 @@ export class RadarCreatedPublisher {
         @Inject('USER_SERVICE') private readonly cliente: ClientProxy
     ) {}
 
-    publish(data: AddRadarDTO): void {
+    publish(radar: RadarDTO): void {
+
+        const data: AddRadarDTO = {
+            trainingId: radar.trainingId,
+            radarId: radar._id.toString()
+        }
+
         this.cliente.emit('radar_created', data);
     }
 

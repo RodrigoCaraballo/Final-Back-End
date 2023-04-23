@@ -1,8 +1,9 @@
 import { Controller, Post, Body, Param, Patch, UseGuards } from '@nestjs/common'
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, tap } from 'rxjs';
 import { CreateRadarUseCase, AddCriteriaUseCase } from '../../application';
 import { RadarDTO, RadarModel } from '../../domain';
 import { CreateRadarGuard } from '../utils/guards/create-radar.guard';
+import { RadarCreatedPublisher } from '../messaging/publisher/radar-created.publisher';
 
 @Controller('radar')
 export class RadarController {
@@ -10,6 +11,7 @@ export class RadarController {
     constructor(
         private readonly createRadarUseCase: CreateRadarUseCase,
         private readonly addCriteriaUseCase: AddCriteriaUseCase,
+        private readonly radarCreatedPublisher: RadarCreatedPublisher,
     ) { }
 
     @UseGuards(CreateRadarGuard)
@@ -17,6 +19,7 @@ export class RadarController {
     createRadar(@Body() radar: RadarDTO): Observable<RadarModel> {
         return this.createRadarUseCase.execute(radar)
             .pipe(
+                tap((radar: RadarModel) => this.radarCreatedPublisher.publish(radar)),
                 catchError(error => {
                     throw new Error(error.message);
                 })
