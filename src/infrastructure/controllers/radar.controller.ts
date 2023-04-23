@@ -3,7 +3,7 @@ import { Observable, catchError, tap } from 'rxjs';
 
 import { CreateRadarUseCase, AddCriteriaUseCase, CreateCriteriaUseCase } from '../../application';
 import { CriteriaDTO, CriterialModel, RadarDTO, RadarModel } from '../../domain';
-import { CreateRadarGuard } from '../utils/guards/create-radar.guard';
+import { LiderGuard } from '../utils/guards/lider.guard';
 import { RadarCreatedPublisher } from '../messaging/publisher/radar-created.publisher';
 
 @Controller('radar')
@@ -16,7 +16,7 @@ export class RadarController {
         private readonly radarCreatedPublisher: RadarCreatedPublisher,
     ) { }
 
-    @UseGuards(CreateRadarGuard)
+    @UseGuards(LiderGuard)
     @Post('create-radar')
     createRadar(@Body() radar: RadarDTO): Observable<RadarModel> {
         return this.createRadarUseCase.execute(radar)
@@ -27,7 +27,7 @@ export class RadarController {
                 })
             )
     }
-
+    @UseGuards(LiderGuard)
     @Post('create-criteria')
     createCriteria(@Body() criteria: CriteriaDTO): Observable<CriterialModel> {
         return this.createCriteriaUseCase.execute(criteria)

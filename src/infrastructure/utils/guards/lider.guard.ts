@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 
 
 @Injectable()
-export class CreateRadarGuard implements CanActivate {
+export class LiderGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const role = request.headers.authorization;
