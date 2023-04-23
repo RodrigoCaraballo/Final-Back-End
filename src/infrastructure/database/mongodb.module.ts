@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { User, UserSchema, Radar, RadarSchema } from './schemas';
+import { User, UserSchema, Radar, RadarSchema, CriteriaSchema, Criteria } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserRepository, RadarRepository } from './repositories';
+import { UserRepository, RadarRepository, CriteriaRepository } from './repositories';
 
 @Module({
     imports: [
@@ -10,11 +10,13 @@ import { UserRepository, RadarRepository } from './repositories';
         MongooseModule.forFeature([
           { name: User.name, schema: UserSchema },
           { name: Radar.name, schema: RadarSchema },
+          { name: Criteria.name, schema: CriteriaSchema },
         ])],
     providers: [
       { provide: 'IUserRepository', useClass: UserRepository },
       { provide: 'IRadarRepository', useClass: RadarRepository },
+      { provide: 'ICriteriaRepository', useClass: CriteriaRepository },
     ],
-    exports: [MongooseModule , 'IUserRepository', 'IRadarRepository']
+    exports: [MongooseModule , 'IUserRepository', 'IRadarRepository', 'ICriteriaRepository']
 })
 export class DatabaseModule { }
