@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
 
 export type CriteriaDocument = HydratedDocument<Criteria>;
-@Schema({ versionKey: false, timestamps: true, collection: 'Criteral' })
+@Schema({ versionKey: false, timestamps: true, collection: 'Criteria' })
 export class Criteria {
   @Prop({ required: true })
   area: string;

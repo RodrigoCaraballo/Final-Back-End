@@ -1,8 +1,8 @@
 import { Observable } from "rxjs";
 import { CriteriaDTO } from "../dto/criteria.dto";
-import { CriterialModel } from "../model";
+import { CriteriaModel } from "../model";
 
 export interface ICriteriaRepository {
 
-    createCriteria(command: CriteriaDTO): Observable<CriterialModel>;
+    createCriteria(command: CriteriaDTO): Observable<CriteriaModel>;
 }

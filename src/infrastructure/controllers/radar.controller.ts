@@ -2,7 +2,7 @@ import { Controller, Post, Body, Param, Patch, UseGuards } from '@nestjs/common'
 import { Observable, catchError, tap } from 'rxjs';
 
 import { CreateRadarUseCase, AddCriteriaUseCase, CreateCriteriaUseCase } from '../../application';
-import { CriteriaDTO, CriterialModel, RadarDTO, RadarModel } from '../../domain';
+import { CriteriaDTO, CriteriaModel, RadarDTO, RadarModel } from '../../domain';
 import { LiderGuard } from '../utils/guards/lider.guard';
 import { RadarCreatedPublisher } from '../messaging/publisher/radar-created.publisher';
 
@@ -29,7 +29,7 @@ export class RadarController {
     }
     @UseGuards(LiderGuard)
     @Post('create-criteria')
-    createCriteria(@Body() criteria: CriteriaDTO): Observable<CriterialModel> {
+    createCriteria(@Body() criteria: CriteriaDTO): Observable<CriteriaModel> {
         return this.createCriteriaUseCase.execute(criteria)
             .pipe(
                 catchError(error => {

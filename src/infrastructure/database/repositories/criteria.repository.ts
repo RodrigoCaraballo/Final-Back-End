@@ -3,7 +3,7 @@ import { Observable, catchError, from, map } from "rxjs";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 
-import { CriteriaDTO, CriterialModel, ICriteriaRepository } from "../../../domain";
+import { CriteriaDTO, CriteriaModel, ICriteriaRepository } from "../../../domain";
 import { Criteria, CriteriaDocument } from "../schemas/criteria.schema";
 
 @Injectable()
@@ -14,10 +14,10 @@ export class CriteriaRepository implements ICriteriaRepository {
         private readonly repository: Model<CriteriaDocument>
     ) { }
 
-    createCriteria(command: CriteriaDTO): Observable<CriterialModel> {
+    createCriteria(command: CriteriaDTO): Observable<CriteriaModel> {
         return from(this.repository.create(command))
             .pipe(
-                map((radar: CriterialModel) => {
+                map((radar: CriteriaModel) => {
                     return radar
                 }),
                 catchError(error => {
