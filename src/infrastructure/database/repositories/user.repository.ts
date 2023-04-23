@@ -52,4 +52,23 @@ export class UserRepository implements IUserRepository {
       }),
     );
   }
+  getUserByEmail(email: string): Observable<IUserModel> {
+    const filter = { email: email };
+    return from(this.repository.findOne(filter)).pipe(
+      map((user: IUserModel) => {
+        return user;
+      }),
+      catchError((error) => {
+        if (error.code === 404) throw new NotFoundException('User not found');
+        else throw new Error(`Generic error: ${error.message}`);
+      }),
+    );
+  }
+  getAllUser(): Observable<IUserModel[]> {
+    return from(this.repository.find()).pipe(
+      map((user: UserDocument[]) => {
+        return user;
+      }),
+    );
+  }
 }
