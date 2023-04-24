@@ -4,6 +4,9 @@ import { StudentEvaluationDTO } from '../../domain';
 import { Observable, catchError } from 'rxjs';
 import { StudentEvaluationModel } from '../../domain/model/student-evaluation.model';
 import { GetStudentEvaluationUseCase } from '../../application/use-cases/get-student-evaluation.use.case';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags("Student-Controller")
 @Controller('student-evaluation')
 export class StudentEvaluationController {
 
