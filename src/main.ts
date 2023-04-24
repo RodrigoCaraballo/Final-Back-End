@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   const options = new DocumentBuilder()
     .setTitle('Radar de estudiantes')
     .setDescription('Se encuentran las rutas usadas para el radar sofka u')
@@ -15,11 +16,13 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/doc', app, document);
+
   app.enableCors({
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
+
   await app.listen(3000);
 }
 bootstrap();
