@@ -11,7 +11,7 @@ import { StudentEvalaution, StudentEvalautionSchema } from './schemas/student-ev
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb+srv://rodrigocaraballo:rodri007@cluster0.fzcprav.mongodb.net/final-back-rodrigo?retryWrites=true&w=majority'),
+        MongooseModule.forRoot('mongodb+srv://rodrigocaraballo:rodri007@cluster0.fzcprav.mongodb.net/final-back-develop?retryWrites=true&w=majority'),
         MongooseModule.forFeature([
           { name: User.name, schema: UserSchema },
           { name: TrainingLeague.name, schema: TrainingLeagueSchema },
