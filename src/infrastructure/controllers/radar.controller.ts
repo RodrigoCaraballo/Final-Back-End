@@ -5,7 +5,9 @@ import { CreateRadarUseCase, AddCriteriaUseCase, CreateCriteriaUseCase, GetCrite
 import { CriteriaDTO, CriteriaModel, RadarDTO, RadarModel } from '../../domain';
 import { LiderGuard } from '../utils/guards/lider.guard';
 import { RadarCreatedPublisher } from '../messaging/publisher/radar-created.publisher';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Radar-Controller")
 @Controller('radar')
 export class RadarController {
 
