@@ -1,12 +1,22 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus, NotFoundException } from '@nestjs/common';
+import { MongoServerError } from 'mongodb';
 
 @Catch(Error)
 export class ErrorExceptionFilter implements ExceptionFilter {
-  catch(exception: Error, host: ArgumentsHost) {
+  catch(exception: MongoServerError, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const response = context.getResponse();
     const message = exception.message;
-    const statusCode = exception instanceof Error ? 400 : response.statusCode;
+    let statusCode;
+
+    if (exception instanceof MongoServerError && exception.code === 11000) {
+      statusCode = HttpStatus.CONFLICT;
+    } else if (exception instanceof NotFoundException) {
+      statusCode = HttpStatus.NOT_FOUND;
+    } else {
+      statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
     const details = exception;
 
     response.status(statusCode).json({ statusCode, message, details });

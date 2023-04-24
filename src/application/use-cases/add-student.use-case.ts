@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { ITrainingLeagueRepository, IUserModel, IUserRepository, TrainingLeagueModel } from '../../domain';
 import { Observable, map, catchError, of, switchMap } from 'rxjs';
 
@@ -24,6 +24,9 @@ export class AddStudentUseCase {
                                 return of(false)
                             })
                         )
+                }),
+                catchError((error) => {
+                    throw new NotFoundException(error.message)
                 })
             )
     }
