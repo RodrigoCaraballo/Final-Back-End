@@ -5,4 +5,5 @@ import { CriteriaModel } from "../model";
 export interface ICriteriaRepository {
 
     createCriteria(command: CriteriaDTO): Observable<CriteriaModel>;
+    findCriterias(): Observable<CriteriaModel[]>;
 }

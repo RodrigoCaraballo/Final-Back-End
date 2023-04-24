@@ -17,13 +17,26 @@ export class CriteriaRepository implements ICriteriaRepository {
     createCriteria(command: CriteriaDTO): Observable<CriteriaModel> {
         return from(this.repository.create(command))
             .pipe(
-                map((radar: CriteriaModel) => {
-                    return radar
+                map((criteria: CriteriaModel) => {
+                    return criteria
                 }),
                 catchError(error => {
                     throw new Error(`Generic error: ${error.message}`)
                 })
             )
     }
+
+    findCriterias(): Observable<CriteriaModel[]> {
+        return from(this.repository.find())
+            .pipe(
+                map((criterias: CriteriaDocument[]) => {
+                    return criterias
+                }),
+                catchError(error => {
+                    throw new Error(`Generic error: ${error.message}`)
+                })
+            )
+    }
+
 
 }

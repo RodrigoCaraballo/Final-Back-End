@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Param, Patch, UseGuards } from '@nestjs/common'
+import { Controller, Post, Body, Param, Patch, UseGuards, Get } from '@nestjs/common'
 import { Observable, catchError, tap } from 'rxjs';
 
-import { CreateRadarUseCase, AddCriteriaUseCase, CreateCriteriaUseCase } from '../../application';
+import { CreateRadarUseCase, AddCriteriaUseCase, CreateCriteriaUseCase, GetCriteriasUseCase } from '../../application';
 import { CriteriaDTO, CriteriaModel, RadarDTO, RadarModel } from '../../domain';
 import { LiderGuard } from '../utils/guards/lider.guard';
 import { RadarCreatedPublisher } from '../messaging/publisher/radar-created.publisher';
@@ -12,6 +12,7 @@ export class RadarController {
     constructor(
         private readonly createRadarUseCase: CreateRadarUseCase,
         private readonly createCriteriaUseCase: CreateCriteriaUseCase,
+        private readonly getCriteriasUseCase: GetCriteriasUseCase,
         private readonly addCriteriaUseCase: AddCriteriaUseCase,
         private readonly radarCreatedPublisher: RadarCreatedPublisher,
     ) { }
@@ -31,6 +32,17 @@ export class RadarController {
     @Post('create-criteria')
     createCriteria(@Body() criteria: CriteriaDTO): Observable<CriteriaModel> {
         return this.createCriteriaUseCase.execute(criteria)
+            .pipe(
+                catchError(error => {
+                    throw new Error(error.message);
+                })
+            )
+    }
+
+    @UseGuards(LiderGuard)
+    @Get('get-criterias')
+    getCriterias(): Observable<CriteriaModel[]> {
+        return this.getCriteriasUseCase.execute()
             .pipe(
                 catchError(error => {
                     throw new Error(error.message);

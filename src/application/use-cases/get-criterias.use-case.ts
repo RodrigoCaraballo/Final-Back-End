@@ -3,16 +3,16 @@ import { Observable, map, catchError } from 'rxjs';
 import { CriteriaModel, ICriteriaRepository, CriteriaDTO } from '../../domain';
 
 @Injectable()
-export class CreateCriteriaUseCase {
+export class GetCriteriasUseCase {
     constructor(
         @Inject('ICriteriaRepository') private readonly criteriaRepository: ICriteriaRepository
     ) { }
 
-    execute(command: CriteriaDTO): Observable<CriteriaModel> {
-        return this.criteriaRepository.createCriteria(command)
+    execute(): Observable<CriteriaModel[]> {
+        return this.criteriaRepository.findCriterias()
             .pipe(
-                map((criteria: CriteriaModel) => {
-                    return criteria;
+                map((criterias: CriteriaModel[]) => {
+                    return criterias;
                 }),
                 catchError(error => {
                     throw new Error(error.message)

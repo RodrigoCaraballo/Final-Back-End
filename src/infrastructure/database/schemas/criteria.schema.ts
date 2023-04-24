@@ -4,13 +4,13 @@ import { HydratedDocument } from "mongoose";
 export type CriteriaDocument = HydratedDocument<Criteria>;
 @Schema({ versionKey: false, timestamps: true, collection: 'Criteria' })
 export class Criteria {
-  @Prop({ required: true })
+  @Prop({type: String, required: true })
   area: string;
 
-  @Prop({ required: true })
+  @Prop({type: String, required: true })
   name: string;
 
-  @Prop({ required: true })
+  @Prop({type: String, required: true })
   descriptor: string;
 
   @Prop({type: Number, required: true})
