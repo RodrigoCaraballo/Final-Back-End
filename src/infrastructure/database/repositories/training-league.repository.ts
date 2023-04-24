@@ -52,8 +52,13 @@ export class TrainingLeagueRepository implements ITrainingLeagueRepository {
     }
 
     getAllTrainingLeagues(coachId?: string): Observable<TrainingLeagueModel[]> {
-        return from(this.repository.find({coach: coachId})
-        .populate('students')
+        let query = {};
+
+        if (coachId) {
+          query = { coach: coachId };
+        }
+
+        return from(this.repository.find(query)
         .exec())
         .pipe(
             map((leagues: TrainingLeagueModel[]) => {
@@ -66,7 +71,9 @@ export class TrainingLeagueRepository implements ITrainingLeagueRepository {
     }
 
     getTrainingLeagueById(trainingLeagueId: string): Observable<TrainingLeagueModel> {
-        return from(this.repository.findById(trainingLeagueId))
+        return from(this.repository.findById(trainingLeagueId)
+        .populate('students')
+        .exec())
         .pipe(
             map((model: TrainingLeagueModel) => {
                 return model

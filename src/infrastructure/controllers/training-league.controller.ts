@@ -7,6 +7,7 @@ import { AddRadarDTO } from 'src/domain/dto/add-radar.dto';
 import { AddRadarUseCase } from 'src/application/use-cases/add-radar.use-case';
 import { CoachGuard } from '../utils/coach.guard';
 import { GetAllTrainingsUseCase } from '../../application/use-cases/get-all-trainings.use-case';
+import { GetTrainingLeagueUseCase } from '../../application/use-cases/get-training-league.use-case';
 @Controller('training-league')
 export class TrainingLeagueController {
 
@@ -14,7 +15,8 @@ export class TrainingLeagueController {
         private readonly createTrainingLeagueUseCase: CreateTrainingLeagueUseCase,
         private readonly addStudentUseCase: AddStudentUseCase,
         private readonly addRadarUseCase: AddRadarUseCase,
-        private readonly getAllUseCase: GetAllTrainingsUseCase
+        private readonly getAllUseCase: GetAllTrainingsUseCase,
+        private readonly getTrainingLeagueUseCase: GetTrainingLeagueUseCase
         ) {}
 
     @Post('create')
@@ -42,6 +44,16 @@ export class TrainingLeagueController {
     @Get('get-all/:coachId?')
     getAllTrainings(@Param('coachId') coachId?: string): Observable<TrainingLeagueModel[]> {
         return this.getAllUseCase.execute(coachId)
+        .pipe(
+            catchError((error: Error) => {
+                throw new Error(error.message);
+            })
+        )
+    }
+
+    @Get('get/:id')
+    getTraining(@Param('id') id: string): Observable<TrainingLeagueModel> {
+        return this.getTrainingLeagueUseCase.execute(id)
         .pipe(
             catchError((error: Error) => {
                 throw new Error(error.message);

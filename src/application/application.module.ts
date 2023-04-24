@@ -9,13 +9,14 @@ import { GetAllUserUseCase } from './use-cases/get-all-user.use-case';
 import { GetUserByEmailUseCase } from './use-cases/get-user-by-email.use-case';
 import { UpdateUserUseCase } from './use-cases/update-user.use-case';
 import { GetStudentEvaluationUseCase } from "./use-cases/get-student-evaluation.use.case";
+import { GetTrainingLeagueUseCase } from "./use-cases/get-training-league.use-case";
 
 
 @Module({
     imports: [DatabaseModule],
     providers: [LoginUseCase, RegisterUseCase, CreateTrainingLeagueUseCase, AddStudentUseCase, AddRadarUseCase, CreateStudentEvaluationUseCase,
-    GetAllTrainingsUseCase, GetStudentEvaluationUseCase, GetAllUserUseCase, GetUserByEmailUseCase,UpdateUserUseCase,],
+    GetAllTrainingsUseCase, GetStudentEvaluationUseCase, GetAllUserUseCase, GetUserByEmailUseCase,UpdateUserUseCase, GetTrainingLeagueUseCase],
     exports: [LoginUseCase, RegisterUseCase, CreateTrainingLeagueUseCase, AddStudentUseCase, AddRadarUseCase, CreateStudentEvaluationUseCase,
-    GetAllTrainingsUseCase, GetStudentEvaluationUseCase, GetAllUserUseCase, GetUserByEmailUseCase,UpdateUserUseCase,]
+    GetAllTrainingsUseCase, GetStudentEvaluationUseCase, GetAllUserUseCase, GetUserByEmailUseCase,UpdateUserUseCase, GetTrainingLeagueUseCase]
   })
 export class ApplicationModule {}

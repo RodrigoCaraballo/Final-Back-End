@@ -15,8 +15,8 @@ export class TrainingLeague {
     @Prop({ type: Types.ObjectId, ref: 'Radar' })
     radar: string;
 
-    @Prop([{type: Types.ObjectId, ref: 'User'}])
-    students?: string[];
+    @Prop({type: [Types.ObjectId], ref: 'User'})
+    students: string[];
 
     @Prop({type: Types.ObjectId, ref: 'User'})
     coach: string;
