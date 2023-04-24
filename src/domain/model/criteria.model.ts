@@ -1,4 +1,4 @@
-export interface CriterialModel {
+export interface CriteriaModel {
     descriptor: string;
     area: string;
 }
