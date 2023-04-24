@@ -7,4 +7,6 @@ export interface IUserRepository {
     createUser(command: UserDTO): Observable<IUserModel>;
     getUser(uid: string): Observable<IUserModel>;
     updateUser(id: string, user: UserDTO): Observable<IUserModel>;
+    getUserByEmail(email:string): Observable<IUserModel>;
+    getAllUser(): Observable<IUserModel[]>
 }
