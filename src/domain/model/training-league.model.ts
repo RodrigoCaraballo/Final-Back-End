@@ -1,15 +1,8 @@
 export interface TrainingLeagueModel {
-    name: string;
-    description: string;
-    radar?: string;
-    students: {
-        student: string;
-        evaluation: {
-            criteria: string;
-            factual: number;
-            conceptual: number;
-            procedural: number;
-            metacognitive: number;
-        }[];
-    }[];
+    readonly id?: string;
+    title: string;
+    cicle: string;
+    radar: string;
+    students?: string[];
+    coach: string;
 }
