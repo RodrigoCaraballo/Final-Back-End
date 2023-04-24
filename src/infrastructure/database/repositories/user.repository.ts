@@ -38,7 +38,10 @@ export class UserRepository implements IUserRepository {
     );
   }
   updateUser(id: string, user: UserDTO): Observable<IUserModel> {
-    return from(this.repository.findByIdAndUpdate(id, user)).pipe(
+    console.log(user)
+    return from(
+      this.repository.findByIdAndUpdate(id, user, { new: true }),
+    ).pipe(
       map((user: IUserModel) => {
         return user;
       }),
