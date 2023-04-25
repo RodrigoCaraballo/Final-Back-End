@@ -26,7 +26,7 @@ require('dotenv').config();
 @Module({
   imports: [
     MongooseModule.forRoot(
-      `${process.env.url}`
+      `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}/${process.env.MONGODB_DBNAME}?retryWrites=true&w=majority`
     ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
