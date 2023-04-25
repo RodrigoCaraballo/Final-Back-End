@@ -10,5 +10,5 @@ export interface IUserRepository {
     updateUser(id: string, user: UpdateUserDto): Observable<IUserModel>;
     getUserByEmail(email:string): Observable<IUserModel>;
     getAllUser(): Observable<IUserModel[]>
-    getAllStudentsByEmail(email: string): Observable<IUserModel[]>
+    getAllStudentsByEmail(): Observable<IUserModel[]>
 }

@@ -9,11 +9,11 @@ export class GetAllStudentByEmailUseCase {
     ) {}
 
     execute(email: string): Observable<IUserModel[]> {
-        return this.userRepository.getAllStudentsByEmail(email)
+        if(!email) email = '';
+        return this.userRepository.getAllStudentsByEmail()
         .pipe(
             map(
-                (students: IUserModel[]) => students
-            ),
+                (students: IUserModel[]) => students.filter(user => user.email.toLowerCase().includes(email.toLowerCase()))),
             catchError((error: Error) => {
                 throw new Error(error.message);
             })
