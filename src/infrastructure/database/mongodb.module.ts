@@ -21,11 +21,12 @@ import {
   StudentEvalaution,
   StudentEvalautionSchema,
 } from './schemas/student-evaluation.schema';
+require('dotenv').config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://rodrigocaraballo:rodri007@cluster0.fzcprav.mongodb.net/final-back-develop?retryWrites=true&w=majority',
+      `${process.env.url}`
     ),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
