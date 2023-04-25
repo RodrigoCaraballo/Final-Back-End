@@ -6,4 +6,5 @@ export interface IRadarRepository {
 
     createRadar(command: RadarDTO): Observable<RadarModel>;
     addCriteria(idRadar: string, idCriteria: string): Observable<RadarModel>;
+    getById(id: string): Observable<RadarModel>
 }

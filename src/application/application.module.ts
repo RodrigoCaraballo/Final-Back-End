@@ -22,6 +22,7 @@ import {
 import { GetTrainingEvaluationsUseCase } from './use-cases/get-all-student-evaluations.use-case';
 import { GetAllStudentByEmailUseCase } from './use-cases/get-all-students-by-email.use.case';
 import { UpdateCriteriaUseCase } from './use-cases/update-criteria.use-case';
+import { GetRadarCriteriaUseCase } from './use-cases/get-radar-criteria-use.case';
 
 
 @Module({
@@ -47,7 +48,8 @@ import { UpdateCriteriaUseCase } from './use-cases/update-criteria.use-case';
     GetTrainingLeagueUseCase,
     GetTrainingEvaluationsUseCase,
     GetAllStudentByEmailUseCase,
-    UpdateCriteriaUseCase
+    UpdateCriteriaUseCase,
+    GetRadarCriteriaUseCase
   ],
   exports: [
     LoginUseCase,
@@ -70,7 +72,8 @@ import { UpdateCriteriaUseCase } from './use-cases/update-criteria.use-case';
     GetTrainingLeagueUseCase,
     GetTrainingEvaluationsUseCase,
     GetAllStudentByEmailUseCase,
-    UpdateCriteriaUseCase
+    UpdateCriteriaUseCase,
+    GetRadarCriteriaUseCase
   ]
 })
 export class ApplicationModule { }
