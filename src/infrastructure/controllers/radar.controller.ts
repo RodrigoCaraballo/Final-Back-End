@@ -21,6 +21,8 @@ import { LiderGuard } from '../utils/guards/lider.guard';
 import { RadarCreatedPublisher } from '../messaging/publisher/radar-created.publisher';
 import { ApiTags } from '@nestjs/swagger';
 import { UpdateCriteriaUseCase } from '../../application/use-cases/update-criteria.use-case';
+import { GetRadarCriteriaUseCase } from '../../application/use-cases/get-radar-criteria-use.case';
+import { CriterionAverage } from '../database/repositories/interfaces/interfaces.helpers';
 
 @ApiTags('Radar-Controller')
 @Controller('radar')
@@ -32,6 +34,7 @@ export class RadarController {
     private readonly addCriteriaUseCase: AddCriteriaUseCase,
     private readonly radarCreatedPublisher: RadarCreatedPublisher,
     private readonly updateCriteriaUseCase: UpdateCriteriaUseCase,
+    private readonly getRadarCriteriaUseCase: GetRadarCriteriaUseCase
   ) {}
 
   @UseGuards(LiderGuard)
@@ -79,6 +82,16 @@ export class RadarController {
   @Put('update-criteria/:id')
   updateCriteria(@Param('id') id: string, @Body() command: CriteriaDTO) {
     return this.updateCriteriaUseCase.execute(id, command).pipe(
+      catchError((error) => {
+        throw new Error(error.message);
+      }),
+    );
+  }
+
+  // @UseGuards(LiderGuard)
+  @Get('get-radar/:id')
+  getById(@Param('id') id: string): Observable<CriterionAverage[]> {
+    return this.getRadarCriteriaUseCase.execute(id).pipe(
       catchError((error) => {
         throw new Error(error.message);
       }),

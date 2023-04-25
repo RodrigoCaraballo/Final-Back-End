@@ -7,6 +7,7 @@ const { ObjectId } = require('mongodb');
 import { RadarDTO, RadarModel, IRadarRepository } from "../../../domain";
 import { Radar, RadarDocument } from "../schemas/radar.schema";
 import { InjectModel } from "@nestjs/mongoose";
+import { CriterionAverage } from "./interfaces/interfaces.helpers";
 
 @Injectable()
 export class RadarRepository implements IRadarRepository {
@@ -29,17 +30,28 @@ export class RadarRepository implements IRadarRepository {
     }
 
     addCriteria(idRadar: string, idCriteria: string): Observable<RadarModel> {
-        const update = { criteria: idCriteria};
+        const update = { criteria: idCriteria };
         return from(this.repository.findByIdAndUpdate(
             idRadar,
             { $push: update },
             { new: true },
         )).pipe(
             switchMap((radar: RadarModel) => {
-                if(radar) return of(radar);
+                if (radar) return of(radar);
                 else throw new NotFoundException('Radar not found');
             })
         )
+    }
+
+    getById(id: string): Observable<RadarModel> {
+        return from(this.repository.findById(id)
+            .populate({ path: 'criteria', model: 'Criteria', select: 'name -_id' })
+            .exec())
+            .pipe(
+                map((radar) => {                    
+                    return radar
+                })
+            )
     }
 
 }

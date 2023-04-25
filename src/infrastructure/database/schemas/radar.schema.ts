@@ -10,7 +10,7 @@ export class Radar {
   @Prop({type: String, required: true })
   trainingId: string;
 
-  @Prop([{type: Types.ObjectId, required: true, ref: 'Criteria'}])
+  @Prop({type: [Types.ObjectId], required: true, ref: 'Criteria'})
   criteria: string[];
 
 }
