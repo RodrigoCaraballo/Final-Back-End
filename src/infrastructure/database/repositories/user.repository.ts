@@ -75,12 +75,10 @@ export class UserRepository implements IUserRepository {
     );
   }
 
-  getAllStudentsByEmail(email?: string): Observable<IUserModel[]> {
-    if(!email) email = '';
-
+  getAllStudentsByEmail(): Observable<IUserModel[]> {
     return from(this.repository.find({role: 'student'}))
     .pipe(
-      map((users: UserDocument[]) => users.filter(user => user.email.toLowerCase().includes(email.toLowerCase())))
+      map((users: UserDocument[]) => users)
     )
   }
 }
