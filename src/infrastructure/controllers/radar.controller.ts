@@ -78,7 +78,7 @@ export class RadarController {
   }
   @Put('update-criteria/:id')
   updateCriteria(@Param('id') id: string, @Body() command: CriteriaDTO) {
-    return this.updateCriteria(id, command).pipe(
+    return this.updateCriteriaUseCase.execute(id, command).pipe(
       catchError((error) => {
         throw new Error(error.message);
       }),

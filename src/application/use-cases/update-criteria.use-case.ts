@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { CriteriaDTO } from '../../domain/dto/criteria.dto';
 import { ICriteriaRepository } from '../../domain/repositories/criteria.repository.interface';
+
 export class UpdateCriteriaUseCase {
   constructor(
     @Inject('ICriteriaRepository')
