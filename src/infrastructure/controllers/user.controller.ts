@@ -12,6 +12,7 @@ import { BadRequestSwagger } from '../../swagger/bad-request.swagger';
 import { DUserDto } from '../utils/dtos/user.dto';
 import { GetUserEmailDto } from '../utils/dtos/get-user-email.dto';
 import { DUpdateUserDto } from '../utils/dtos/update-user.dto';
+import { GetAllStudentByEmailUseCase } from '../../application/use-cases/get-all-students-by-email.use.case';
 
 @ApiTags('User-Controller')
 @Controller('login')
@@ -22,6 +23,7 @@ export class LoginController {
     private readonly getAllUserUseCase: GetAllUserUseCase,
     private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
+    private readonly getAllStudentsByEmailUseCase: GetAllStudentByEmailUseCase
   ) {}
 
   //Change the UserCommand to a DTO
@@ -117,6 +119,30 @@ export class LoginController {
   getAllUser() {
     return this.getAllUserUseCase.execute();
   }
+
+  @ApiOperation({
+    summary: 'Se encuentra todos los usuarios',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'El usuarios encontrados',
+    type: IndexUserSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No se encontro usuario',
+    type: NotFoundSwagger,
+  })
+  @Get('get-all/:email?')
+  getAllStudentsByEmail(@Param('email') email?: string) {
+    return this.getAllStudentsByEmailUseCase.execute(email);
+  }
+
   @ApiOperation({
     summary: 'Se actualiza el usuario',
   })

@@ -19,6 +19,8 @@ import {
   RegisterUseCase,
   GetTrainingLeagueUseCase
 } from "./use-cases";
+import { GetTrainingEvaluationsUseCase } from './use-cases/get-all-student-evaluations.use-case';
+import { GetAllStudentByEmailUseCase } from './use-cases/get-all-students-by-email.use.case';
 
 
 @Module({
@@ -41,7 +43,9 @@ import {
     GetAllUserUseCase,
     GetUserByEmailUseCase,
     UpdateUserUseCase,
-    GetTrainingLeagueUseCase
+    GetTrainingLeagueUseCase,
+    GetTrainingEvaluationsUseCase,
+    GetAllStudentByEmailUseCase
   ],
   exports: [
     LoginUseCase,
@@ -61,7 +65,9 @@ import {
     GetAllUserUseCase,
     GetUserByEmailUseCase,
     UpdateUserUseCase,
-    GetTrainingLeagueUseCase
+    GetTrainingLeagueUseCase,
+    GetTrainingEvaluationsUseCase,
+    GetAllStudentByEmailUseCase
   ]
 })
 export class ApplicationModule { }
