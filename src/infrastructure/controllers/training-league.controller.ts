@@ -15,6 +15,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { NotFoundSwagger } from '../../swagger/not-found.swagger';
 import { BadRequestSwagger } from '../../swagger/bad-request.swagger';
 import { IndexTrainingLeagueSwagger } from '../../swagger/index-training-league.swagger';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @ApiTags('Training League- Controller')
 @Controller('training-league')
@@ -84,4 +85,9 @@ export class TrainingLeagueController {
       }),
     );
   }
+  
+  @EventPattern('radar_created')
+    handrerRadarCreated(@Payload() data: AddRadarDTO): Observable<boolean>{
+      return this.addRadarUseCase.execute(data);
+    }
 }
