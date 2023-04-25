@@ -21,6 +21,7 @@ import {
 } from "./use-cases";
 import { GetTrainingEvaluationsUseCase } from './use-cases/get-all-student-evaluations.use-case';
 import { GetAllStudentByEmailUseCase } from './use-cases/get-all-students-by-email.use.case';
+import { UpdateCriteriaUseCase } from './use-cases/update-criteria.use-case';
 
 
 @Module({
@@ -45,7 +46,8 @@ import { GetAllStudentByEmailUseCase } from './use-cases/get-all-students-by-ema
     UpdateUserUseCase,
     GetTrainingLeagueUseCase,
     GetTrainingEvaluationsUseCase,
-    GetAllStudentByEmailUseCase
+    GetAllStudentByEmailUseCase,
+    UpdateCriteriaUseCase
   ],
   exports: [
     LoginUseCase,
@@ -67,7 +69,8 @@ import { GetAllStudentByEmailUseCase } from './use-cases/get-all-students-by-ema
     UpdateUserUseCase,
     GetTrainingLeagueUseCase,
     GetTrainingEvaluationsUseCase,
-    GetAllStudentByEmailUseCase
+    GetAllStudentByEmailUseCase,
+    UpdateCriteriaUseCase
   ]
 })
 export class ApplicationModule { }
