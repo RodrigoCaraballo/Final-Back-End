@@ -54,18 +54,69 @@ export class TrainingLeagueController {
       }),
     );
   }
-
+  @ApiOperation({
+    summary: 'Se agrega estudiante',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve un booleano',
+    type: Boolean,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No se encontro usuario',
+    type: NotFoundSwagger,
+  })
   @Post('add-student')
   @UseGuards(CoachGuard)
   addStudent(@Body() data: AddStudentDTO): Observable<boolean> {
     return this.addStudentUseCase.execute(data.trainingId, data.studentId);
   }
-
+  @ApiOperation({
+    summary: 'Se agrega un radar',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve un booleano',
+    type: Boolean,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No se encontro usuario',
+    type: NotFoundSwagger,
+  })
   @Post('add-radar')
   addRadar(@Body() data: AddRadarDTO): Observable<boolean> {
     return this.addRadarUseCase.execute(data);
   }
-
+  @ApiOperation({
+    summary: 'Se obtiene todos los training',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve un array de todos los training League',
+    type: IndexTrainingLeagueSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No se encontro usuario',
+    type: NotFoundSwagger,
+  })
   @Get('get-all/:coachId?')
   getAllTrainings(
     @Param('coachId') coachId?: string,
@@ -77,6 +128,24 @@ export class TrainingLeagueController {
     );
   }
 
+  @ApiOperation({
+    summary: 'Obtiene solo un training por id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el training League obtenido',
+    type: IndexTrainingLeagueSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No se encontro usuario',
+    type: NotFoundSwagger,
+  })
   @Get('get/:id')
   getTraining(@Param('id') id: string): Observable<TrainingLeagueModel> {
     return this.getTrainingLeagueUseCase.execute(id).pipe(
@@ -85,9 +154,9 @@ export class TrainingLeagueController {
       }),
     );
   }
-  
+
   @EventPattern('radar_created')
-    handrerRadarCreated(@Payload() data: AddRadarDTO): Observable<boolean>{
-      return this.addRadarUseCase.execute(data);
-    }
+  handrerRadarCreated(@Payload() data: AddRadarDTO): Observable<boolean> {
+    return this.addRadarUseCase.execute(data);
+  }
 }
