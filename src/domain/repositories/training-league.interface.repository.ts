@@ -8,4 +8,5 @@ export interface ITrainingLeagueRepository {
     getAllTrainingLeagues(coachId?: string): Observable<TrainingLeagueModel[]>
     getTrainingLeagueById(trainingLeagueId: string): Observable<TrainingLeagueModel>;
     getTrainingLeagueByCicleAndTittle(data: CreateTrainingLeagueDTO): Observable<TrainingLeagueModel>;
+    getStudentInTrainingLeague(idTraining:string,idStudent:string):Observable<boolean>
 }

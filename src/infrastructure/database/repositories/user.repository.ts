@@ -12,7 +12,7 @@ export class UserRepository implements IUserRepository {
   constructor(
     @InjectModel(User.name)
     private readonly repository: Model<UserDocument>,
-  ) { }
+  ) {}
 
   createUser(command: UserDTO): Observable<IUserModel> {
     return from(this.repository.create(command)).pipe(
@@ -75,9 +75,11 @@ export class UserRepository implements IUserRepository {
   }
 
   getAllStudentsByEmail(): Observable<IUserModel[]> {
-    return from(this.repository.find({role: 'student'}))
-    .pipe(
-      map((users: UserDocument[]) => users)
-    )
+    return from(this.repository.find({ role: 'student' })).pipe(
+      map((users: UserDocument[]) => users),
+    );
+  }
+  getUserById(id: string): Observable<IUserModel> {
+    return from(this.repository.findById(id));
   }
 }
