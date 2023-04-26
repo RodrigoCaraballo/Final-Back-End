@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IStudentEvaluationRepository } from '../../../domain/repositories/student-evaluation.interface.repository';
-import { Observable, catchError, from, map } from 'rxjs';
+import { Observable, catchError, from, map, of } from 'rxjs';
 import { StudentEvaluationDTO, TrainingLeagueModel } from '../../../domain';
 import { StudentEvaluationModel } from '../../../domain/model/student-evaluation.model';
 import { StudentEvalaution, StudentEvalautionDocument } from '../schemas/student-evaluation.schema';
@@ -72,8 +72,8 @@ export class StudentEvaluationRepository implements IStudentEvaluationRepository
         return from(this.repository.findOne({trainingLeague: trainingId, student: studentId}))
         .pipe(
           map((evaluation: StudentEvaluationModel) => evaluation !== null ? true : false),
-          catchError((error: Error) => {
-            throw new Error(error.message)
+          catchError(() => {
+            return of(false)
           })
         )
       }
