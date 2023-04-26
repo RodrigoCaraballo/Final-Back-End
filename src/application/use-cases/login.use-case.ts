@@ -22,7 +22,7 @@ export class LoginUseCase {
           };
           return jwt.sign(payload, process.env.SECRET_KEY || 'final-back');
         }
-        throw new Error(`User ${user.uid} is already unactivated`);
+        throw new Error(`User ${user.name} is already unactivated`);
       }),
       catchError((error) => {
         throw new Error(error.message);
