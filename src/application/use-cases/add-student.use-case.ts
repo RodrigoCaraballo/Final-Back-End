@@ -5,7 +5,15 @@ import {
   IUserRepository,
   TrainingLeagueModel,
 } from '../../domain';
-import { Observable, map, catchError, of, switchMap, mergeMap } from 'rxjs';
+import {
+  Observable,
+  map,
+  catchError,
+  of,
+  switchMap,
+  mergeMap,
+  merge,
+} from 'rxjs';
 
 @Injectable()
 export class AddStudentUseCase {
@@ -16,16 +24,15 @@ export class AddStudentUseCase {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  execute(trainingId: string, studentId: string): Observable<boolean> {
-    return this.trainingLeagueRepository
-      .getStudentInTrainingLeague(trainingId, studentId)
-      .pipe(
-        mergeMap((state) => {
-          if (state) {
-            return of(false);
-          } else {
-            return this.userRepository.getUserById(studentId).pipe(
-              switchMap((user: IUserModel) => {
+  execute(trainingId: string, emailStudent: string): Observable<boolean> {
+    return this.userRepository.getUserByEmail(emailStudent).pipe(
+      switchMap((user: IUserModel) => {
+        return this.trainingLeagueRepository
+          .getStudentInTrainingLeague(trainingId, user.id)
+          .pipe(
+            mergeMap((state) => {
+              if (state) return of(false);
+              else {
                 return this.trainingLeagueRepository
                   .addStudent(trainingId, user.id)
                   .pipe(
@@ -36,14 +43,14 @@ export class AddStudentUseCase {
                       return of(false);
                     }),
                   );
-              }),
-              catchError((error) => {
-                throw new NotFoundException(error.message);
-              }),
-            );
-          }
-        }),
-      );
+              }
+            }),
+          );
+      }),
+      catchError((error) => {
+        throw new NotFoundException(error.message);
+      }),
+    );
   }
   // return this.userRepository.getUserByEmail(studentId)
   //         .pipe(
@@ -62,4 +69,32 @@ export class AddStudentUseCase {
   //                 throw new NotFoundException(error.message)
   //             })
   //         )
+
+  //   return this.trainingLeagueRepository
+  //       .getStudentInTrainingLeague(trainingId, emailStudent)
+  //       .pipe(
+  //         mergeMap((state) => {
+  //           if (state) {
+  //             return of(false);
+  //           } else {
+  //             return this.userRepository.getUserByEmail(emailStudent).pipe(
+  //               switchMap((user: IUserModel) => {
+  //                 return this.trainingLeagueRepository
+  //                   .addStudent(trainingId, user.id)
+  //                   .pipe(
+  //                     mergeMap((training: TrainingLeagueModel) => {
+  //                       if (training) return of(true);
+  //                     }),
+  //                     catchError(() => {
+  //                       return of(false);
+  //                     }),
+  //                   );
+  //               }),
+  //               catchError((error) => {
+  //                 throw new NotFoundException(error.message);
+  //               }),
+  //             );
+  //           }
+  //         }),
+  //       );
 }
