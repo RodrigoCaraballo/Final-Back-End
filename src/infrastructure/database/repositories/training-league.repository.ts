@@ -83,4 +83,7 @@ export class TrainingLeagueRepository implements ITrainingLeagueRepository {
             })
         )
     }
+    getTrainingLeagueByCicleAndTittle(data:CreateTrainingLeagueDTO):Observable<TrainingLeagueModel>{
+        return from(this.repository.findOne({title:data.title, cicle:data.cicle}))
+    }
 }

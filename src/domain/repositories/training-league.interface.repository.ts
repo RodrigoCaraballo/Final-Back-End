@@ -7,4 +7,5 @@ export interface ITrainingLeagueRepository {
     addRadar(trainingLeagueId: string, data: TrainingLeagueModel): Observable<TrainingLeagueModel>;
     getAllTrainingLeagues(coachId?: string): Observable<TrainingLeagueModel[]>
     getTrainingLeagueById(trainingLeagueId: string): Observable<TrainingLeagueModel>;
+    getTrainingLeagueByCicleAndTittle(data: CreateTrainingLeagueDTO): Observable<TrainingLeagueModel>;
 }
