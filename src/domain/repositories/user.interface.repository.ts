@@ -11,4 +11,5 @@ export interface IUserRepository {
     getUserByEmail(email:string): Observable<IUserModel>;
     getAllUser(): Observable<IUserModel[]>
     getAllStudentsByEmail(): Observable<IUserModel[]>
+    getUserById(id: string): Observable<IUserModel>
 }

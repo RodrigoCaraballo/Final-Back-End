@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ITrainingLeagueRepository } from '../../../domain';
-import { Observable, catchError, from, map } from 'rxjs';
+import { Observable, catchError, from, map, mergeMap, of } from 'rxjs';
 import { CreateTrainingLeagueDTO } from 'src/domain/dto/training-league.dto';
 import { TrainingLeagueModel } from 'src/domain/model/training-league.model';
 import { InjectModel } from '@nestjs/mongoose';
@@ -81,6 +81,18 @@ export class TrainingLeagueRepository implements ITrainingLeagueRepository {
             catchError((error: Error) => {
                 throw new Error(error.message);
             })
+        )
+    }
+    getTrainingLeagueByCicleAndTittle(data:CreateTrainingLeagueDTO):Observable<TrainingLeagueModel>{
+        return from(this.repository.findOne({title:data.title, cicle:data.cicle}))
+    }
+    getStudentInTrainingLeague(idTraining:string,idStudent:string):Observable<boolean>{
+        return from(this.repository.findOne({_id:idTraining,students:idStudent})).pipe(
+            mergeMap((training)=>{
+                if(training) return of(true)
+                else return of(false)
+            })
+
         )
     }
 }

@@ -19,10 +19,14 @@ import {
 import { CriteriaDTO, CriteriaModel, RadarDTO, RadarModel } from '../../domain';
 import { LiderGuard } from '../utils/guards/lider.guard';
 import { RadarCreatedPublisher } from '../messaging/publisher/radar-created.publisher';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateCriteriaUseCase } from '../../application/use-cases/update-criteria.use-case';
 import { GetRadarCriteriaUseCase } from '../../application/use-cases/get-radar-criteria-use.case';
 import { CriterionAverage } from '../database/repositories/interfaces/interfaces.helpers';
+import { IndexUserSwagger } from 'src/swagger/index-user.swagger';
+import { BadRequestSwagger } from 'src/swagger/bad-request.swagger';
+import { NotFoundSwagger } from 'src/swagger/not-found.swagger';
+import { GetAllRadarsUseCase } from '../../application/use-cases/get-all-radars.use-case';
 
 @ApiTags('Radar-Controller')
 @Controller('radar')
@@ -34,7 +38,8 @@ export class RadarController {
     private readonly addCriteriaUseCase: AddCriteriaUseCase,
     private readonly radarCreatedPublisher: RadarCreatedPublisher,
     private readonly updateCriteriaUseCase: UpdateCriteriaUseCase,
-    private readonly getRadarCriteriaUseCase: GetRadarCriteriaUseCase
+    private readonly getRadarCriteriaUseCase: GetRadarCriteriaUseCase,
+    private readonly getAllRadarsUseCase: GetAllRadarsUseCase,
   ) {}
 
   @UseGuards(LiderGuard)
@@ -96,5 +101,28 @@ export class RadarController {
         throw new Error(error.message);
       }),
     );
+  }
+
+  @ApiOperation({
+    summary: 'Se encuentra todos los radares',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Los radares encontrados',
+    type: IndexUserSwagger,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request',
+    type: BadRequestSwagger,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No se encontro radar',
+    type: NotFoundSwagger,
+  })
+  @Get('')
+  getAllRadar() {
+    return this.getAllRadarsUseCase.execute();
   }
 }
