@@ -79,7 +79,7 @@ export class StudentEvaluationRepository implements IStudentEvaluationRepository
       }
 
       updateEvaluation(trainingId: string, data: StudentEvaluationDTO): Observable<StudentEvaluationModel> {
-        return from(this.repository.findByIdAndUpdate(trainingId, data))
+        return from(this.repository.findOneAndUpdate({trainingLeague: trainingId}, data, {new: true}))
         .pipe(
           map(
             (evaluation: StudentEvaluationModel) => evaluation),
