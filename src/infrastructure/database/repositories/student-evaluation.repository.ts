@@ -67,4 +67,25 @@ export class StudentEvaluationRepository implements IStudentEvaluationRepository
           })
         );
       }
+
+      verifyEvaluation(trainingId: string, studentId: string): Observable<boolean> {
+        return from(this.repository.findOne({trainingLeague: trainingId, student: studentId}))
+        .pipe(
+          map((evaluation: StudentEvaluationModel) => evaluation !== null ? true : false),
+          catchError((error: Error) => {
+            throw new Error(error.message)
+          })
+        )
+      }
+
+      updateEvaluation(trainingId: string, data: StudentEvaluationDTO): Observable<StudentEvaluationModel> {
+        return from(this.repository.findByIdAndUpdate(trainingId, data))
+        .pipe(
+          map(
+            (evaluation: StudentEvaluationModel) => evaluation),
+            catchError((error: Error) => {
+              throw new Error(error.message)
+            })
+        )
+      }
 }

@@ -9,7 +9,7 @@ export class TrainingLeague {
     @Prop({ type: String, required: true, unique: true })
     title: string;
 
-    @Prop({ type: String, required: true, unique: true })
+    @Prop({ type: String, required: true })
     cicle: string;
 
     @Prop({ type: Types.ObjectId, ref: 'Radar' })
@@ -20,7 +20,7 @@ export class TrainingLeague {
 
     @Prop({type: Types.ObjectId, ref: 'User'})
     coach: string;
-
+    
 }
 
 export const TrainingLeagueSchema = SchemaFactory.createForClass(TrainingLeague);
