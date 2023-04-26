@@ -29,7 +29,7 @@ export class StudentEvaluationController {
     }
 
     @Get('get-one/:studentId')
-    getStudentEvaluation(@Param('studentId') studentId: string): Observable<StudentEvaluationModel> {
+    getStudentEvaluation(@Param('studentId') studentId: string): Observable<CriterionAverage> {
         return this.getStudentEvaluationUseCase.execute(studentId)
         .pipe(
             catchError((error: Error) => {

@@ -10,82 +10,93 @@ import { CriterionAverage } from './interfaces/interfaces.helpers';
 @Injectable()
 export class StudentEvaluationRepository implements IStudentEvaluationRepository {
 
-    constructor(
-        @InjectModel(StudentEvalaution.name)
-        private readonly repository: Model<StudentEvalautionDocument>
-    ) { }
-    createEvaluation(data: StudentEvaluationDTO): Observable<StudentEvaluationModel> {
-        return from(this.repository.create(data))
-            .pipe(
-                map(
-                    (model: StudentEvaluationModel) => {
-                        return model
-                    }),
-                catchError((error: Error) => {
-                    throw new Error(error.message);
-                })
-            )
-    }
-    getStudentEvaluation(studentId: string): Observable<StudentEvaluationModel> {
-        return from(
-            this.repository.findOne({ student: studentId })
-                .populate('trainingLeague')
-                // .populate({
-                //     path: 'evaluations.criteria',
-                //     model: 'Criteria',
-                // })
-        ).pipe(
-            map((model: StudentEvaluationModel) => {
-                return model;
-            }),
-            catchError((error: Error) => {
-                throw new Error(error.message);
-            }),
-        );
-    }
-
-    getTrainingEvaluations(trainingId: string): Observable<CriterionAverage[]> {
-        return from(this.repository.aggregate([
-          { $match: { trainingLeague: trainingId } },
-          { $unwind: '$evaluations' },
-          {
-            $group: {
-              _id: '$evaluations.criteria',
-              average: { $avg: '$evaluations.qualification' }
-            }
-          },
-          {
-            $project: {
-              _id: 0,
-              criteria: '$_id',
-              average: 1
-            }
+  constructor(
+    @InjectModel(StudentEvalaution.name)
+    private readonly repository: Model<StudentEvalautionDocument>
+  ) { }
+  createEvaluation(data: StudentEvaluationDTO): Observable<StudentEvaluationModel> {
+    return from(this.repository.create(data))
+      .pipe(
+        map(
+          (model: StudentEvaluationModel) => {
+            return model
+          }),
+        catchError((error: Error) => {
+          throw new Error(error.message);
+        })
+      )
+  }
+  getStudentEvaluation(studentId: string): Observable<CriterionAverage> {
+    return from(
+      this.repository.aggregate([
+        { $match: { student: studentId } },
+        { $unwind: '$evaluations' },
+        {
+          $group: {
+            _id: '$evaluations.criteria',
+            average: { $avg: '$evaluations.qualification' }
           }
-        ])).pipe(
-          map((result: CriterionAverage[]) => {
-            return result;
-          })
-        );
-      }
+        },
+        {
+          $project: {
+            _id: 0,
+            criteria: '$_id',
+            average: 1
+          }
+        }
+      ]))
+      .pipe(
+        map((model: CriterionAverage) => {
+          return model;
+        }),
+        catchError((error: Error) => {
+          throw new Error(error.message);
+        }),
+      );
+  }
 
-      verifyEvaluation(trainingId: string, studentId: string): Observable<boolean> {
-        return from(this.repository.findOne({trainingLeague: trainingId, student: studentId}))
-        .pipe(
-          map((evaluation: StudentEvaluationModel) => evaluation !== null ? true : false),
-          catchError(() => {
-            return of(false)
-          })
-        )
+  getTrainingEvaluations(trainingId: string): Observable<CriterionAverage[]> {
+    return from(this.repository.aggregate([
+      { $match: { trainingLeague: trainingId } },
+      { $unwind: '$evaluations' },
+      {
+        $group: {
+          _id: '$evaluations.criteria',
+          average: { $avg: '$evaluations.qualification' }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          criteria: '$_id',
+          average: 1
+        }
       }
+    ])).pipe(
+      map((result: CriterionAverage[]) => {
+        return result;
+      })
+    );
+  }
 
-      updateEvaluation(trainingId: string, data: StudentEvaluationDTO): Observable<StudentEvaluationModel> {
-        return from(this.repository.findOneAndUpdate({trainingLeague: trainingId}, data, {new: true}))
-        .pipe(
-          map(
-            (evaluation: StudentEvaluationModel) => evaluation),
-            catchError((error: Error) => {
-              throw new Error(error.message)
-            })
-        )
-      }
+  verifyEvaluation(trainingId: string, studentId: string): Observable<boolean> {
+    return from(this.repository.findOne({ trainingLeague: trainingId, student: studentId }))
+      .pipe(
+        map((evaluation: StudentEvaluationModel) => evaluation !== null ? true : false),
+        catchError(() => {
+          return of(false)
+        })
+      )
+  }
+
+  updateEvaluation(trainingId: string, data: StudentEvaluationDTO): Observable<StudentEvaluationModel> {
+    return from(this.repository.findOneAndUpdate({ trainingLeague: trainingId }, data, { new: true }))
+      .pipe(
+        map(
+          (evaluation: StudentEvaluationModel) => evaluation),
+        catchError((error: Error) => {
+          throw new Error(error.message)
+        })
+      )
+  }
 }

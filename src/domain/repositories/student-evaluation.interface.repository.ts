@@ -5,7 +5,7 @@ import { CriterionAverage } from "../../infrastructure/database/repositories/int
 
 export interface IStudentEvaluationRepository {
     createEvaluation(data: StudentEvaluationDTO): Observable<StudentEvaluationModel>;
-    getStudentEvaluation(studentId: string): Observable<StudentEvaluationModel>;
+    getStudentEvaluation(studentId: string): Observable<CriterionAverage>;
     verifyEvaluation(trainingId: string ,studentId: string): Observable<boolean>;
     getTrainingEvaluations(trainingId: string): Observable<CriterionAverage[]>
     updateEvaluation(trainingId: string, data: StudentEvaluationDTO): Observable<StudentEvaluationModel>
