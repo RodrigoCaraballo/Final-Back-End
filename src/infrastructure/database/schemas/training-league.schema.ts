@@ -5,7 +5,7 @@ export type TrainingLeagueDocument = HydratedDocument<TrainingLeague>;
 
 @Schema({ versionKey: false, timestamps: true, collection: 'Training Leagues' })
 export class TrainingLeague {
-  @Prop({ type: String, required: true, unique: true })
+  @Prop({ type: String, required: true })
   title: string;
 
   @Prop({ type: String, required: true })
@@ -23,3 +23,4 @@ export class TrainingLeague {
 
 export const TrainingLeagueSchema =
   SchemaFactory.createForClass(TrainingLeague);
+TrainingLeagueSchema.index({ title: 1, cicle: 1 }, { unique: true });
