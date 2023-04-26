@@ -54,4 +54,12 @@ export class RadarRepository implements IRadarRepository {
             )
     }
 
+    getAllRadars(): Observable<RadarModel[]> {
+        return from(this.repository.find()).pipe(
+          map((radars: RadarDocument[]) => {
+            return radars;
+          }),
+        );
+    }
+
 }
