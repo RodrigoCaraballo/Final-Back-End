@@ -28,6 +28,8 @@ import { BadRequestSwagger } from '../../swagger/bad-request.swagger';
 import { NotFoundSwagger } from '../../swagger/not-found.swagger';
 import { GetAllRadarsUseCase } from '../../application/use-cases/get-all-radars.use-case';
 import { IndexRadarSwagger } from '../../swagger/index-radar.swagger';
+import { DCreateRadarDto } from '../utils/dtos/create-radar.dto';
+import { DCriteriaDtio } from '../utils/dtos/criteria.dto';
 
 @ApiTags('Radar-Controller')
 @Controller('radar')
@@ -63,7 +65,7 @@ export class RadarController {
   })
   @UseGuards(LiderGuard)
   @Post('create-radar')
-  createRadar(@Body() radar: RadarDTO): Observable<RadarModel> {
+  createRadar(@Body() radar: DCreateRadarDto): Observable<RadarModel> {
     return this.createRadarUseCase.execute(radar).pipe(
       tap((radar: RadarModel) => this.radarCreatedPublisher.publish(radar)),
       catchError((error) => {
@@ -91,7 +93,7 @@ export class RadarController {
   })
   @UseGuards(LiderGuard)
   @Post('create-criteria')
-  createCriteria(@Body() criteria: CriteriaDTO): Observable<CriteriaModel> {
+  createCriteria(@Body() criteria: DCriteriaDtio): Observable<CriteriaModel> {
     return this.createCriteriaUseCase.execute(criteria).pipe(
       catchError((error) => {
         throw new Error(error.message);
@@ -177,7 +179,7 @@ export class RadarController {
   @Put('update-criteria/:id')
   updateCriteria(
     @Param('id') id: string,
-    @Body() command: CriteriaDTO,
+    @Body() command: DCriteriaDtio,
   ): Observable<CriteriaModel> {
     return this.updateCriteriaUseCase.execute(id, command).pipe(
       catchError((error) => {
