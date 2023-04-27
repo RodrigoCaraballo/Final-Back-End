@@ -11,8 +11,8 @@ export class GetStudentEvaluationUseCase {
         private readonly studentEvaluationRepository: IStudentEvaluationRepository
     ) {}
 
-    execute(studentId: string): Observable<CriterionAverage> {
-        return this.studentEvaluationRepository.getStudentEvaluation(studentId)
+    execute(studentId: string, trainingId: string): Observable<CriterionAverage> {
+        return this.studentEvaluationRepository.getStudentEvaluation(studentId, trainingId)
         .pipe(
             map((model: CriterionAverage) => {
                 return model

@@ -26,10 +26,10 @@ export class StudentEvaluationRepository implements IStudentEvaluationRepository
         })
       )
   }
-  getStudentEvaluation(studentId: string): Observable<CriterionAverage> {
+  getStudentEvaluation(studentId: string, trainingId: string): Observable<CriterionAverage> {
     return from(
       this.repository.aggregate([
-        { $match: { student: studentId } },
+        { $match: { student: studentId, trainingLeague: trainingId } },
         { $unwind: '$evaluations' },
         {
           $group: {

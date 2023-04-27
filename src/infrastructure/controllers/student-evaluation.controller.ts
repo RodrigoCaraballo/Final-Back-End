@@ -68,11 +68,12 @@ export class StudentEvaluationController {
     description: 'No se encontro evaluacion',
     type: NotFoundSwagger,
   })
-  @Get('get-one/:studentId')
+  @Get('get-one/:studentId/:trainingId')
   getStudentEvaluation(
     @Param('studentId') studentId: string,
+    @Param('trainingId') trainingId: string
   ): Observable<CriterionAverage> {
-    return this.getStudentEvaluationUseCase.execute(studentId).pipe(
+    return this.getStudentEvaluationUseCase.execute(studentId, trainingId).pipe(
       catchError((error: Error) => {
         throw new Error(error.message);
       }),
