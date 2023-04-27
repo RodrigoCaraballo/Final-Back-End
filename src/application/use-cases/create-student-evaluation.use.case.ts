@@ -15,8 +15,6 @@ export class CreateStudentEvaluationUseCase {
             .pipe(
                 switchMap((value: boolean) => {
                     if (!value) {
-                        console.log('Creando');
-                        
                         return this.studentEvaluationRepository.createEvaluation(data)
                             .pipe(
                                 map((model: StudentEvaluationModel) => {
@@ -29,14 +27,9 @@ export class CreateStudentEvaluationUseCase {
                     }
 
                     if(value) {
-                        console.log('Actualizando');
-                        
                         return this.studentEvaluationRepository.updateEvaluation(data.trainingLeague, data)
                         .pipe(
-                            map((model: StudentEvaluationModel) => {
-                                console.log('Actualizado');
-                                console.log(model);
-                                
+                            map((model: StudentEvaluationModel) => {                                
                                 return model
                             }),
                             catchError((error: Error) => {
