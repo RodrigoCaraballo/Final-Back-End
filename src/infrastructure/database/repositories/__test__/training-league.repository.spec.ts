@@ -3,9 +3,10 @@ import { TrainingLeague } from "../../schemas";
 import { TrainingLeagueRepository } from "../training-league.repository";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getModelToken } from "@nestjs/mongoose";
-import { CreateTrainingLeagueDTO } from "../../../../domain";
+import { CreateTrainingLeagueDTO, IUserModel, RolesEnum, TrainingLeagueModel } from "../../../../domain";
+import { lastValueFrom, of } from 'rxjs';
 
-describe('Company Repository', () => {
+describe('Training League Repository', () => {
     let repository: TrainingLeagueRepository;
     let model: Model<TrainingLeague>;
 
@@ -17,9 +18,11 @@ describe('Company Repository', () => {
                     provide: getModelToken(TrainingLeague.name),
                     useValue: {
                         create: jest.fn(),
+                        findByIdAndUpdate: jest.fn(),
+                        find: jest.fn(),
                         findById: jest.fn(),
                         findOne: jest.fn(),
-                        find: jest.fn(),
+                        exec: jest.fn(),
                     },
                 },
             ],
@@ -36,142 +39,337 @@ describe('Company Repository', () => {
         it('should return a new User', async () => {
             // Arrange
             const training: CreateTrainingLeagueDTO = {
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
             };
 
-            const mockCompany = {
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
+            const mockTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
             };
-            const expectedCompany = {
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
+            const expectedTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
             };
-            jest.spyOn(model, 'create').mockResolvedValue(mockCompany as any);
+
+            jest.spyOn(model, 'create').mockResolvedValue(mockTraining as any);
 
             // Act
-            const result = repository.save(company);
+            const result = repository.createTrainingLeague(training);
 
             // Assert
-            expect(await lastValueFrom(result)).toEqual(expectedCompany);
+            expect(await lastValueFrom(result)).toEqual(expectedTraining);
         });
 
         it('should throw an error if saves fails', async () => {
             // Arrange
-            const company: ICompanyModel = {
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
-            };
-            const error = new Error();
-            const expectedError = new Error('Error creating company - Company Repository');
+            const training: CreateTrainingLeagueDTO = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
+            };;
+            const error = new Error('Error');
+            const expectedError = new Error('Error');
             jest.spyOn(model, 'create').mockRejectedValue(error);
 
             // Act
-            const result = repository.save(company as any);
+            const result = repository.createTrainingLeague(training as any);
 
             // Assert
             await expect(lastValueFrom(result)).rejects.toThrowError(expectedError);
         });
     });
 
-    describe('Get By Username and Password', () => {
-        it('should return a user', async () => {
+    describe('add student', () => {
+        it('should add a student', async () => {
             // Arrange
-            const username = 'foo';
-            const password = 'bar';
+            const trainingId = '123';
+            const studentId = '23123';
 
-            const mockedUser = {
-                _id: '641c70d41964e9445f593bcc',
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
+            const mockTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
+                students: ['23123']
             };
-            const expectedUser = {
-                _id: '641c70d41964e9445f593bcc',
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
+            const expectedTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
+                students: ['23123']
             };
-            jest.spyOn(model, 'findOne').mockResolvedValue(mockedUser as any);
+
+            jest.spyOn(model, 'findByIdAndUpdate').mockResolvedValue(mockTraining as any);
 
             // Act
-            const result = repository.getByUsernameAndPassword(username, password);
+            const result = repository.addStudent(trainingId, studentId);
 
             // Assert
-            expect(await lastValueFrom(result)).toEqual(expectedUser);
-        });
+            expect(await lastValueFrom(result)).toEqual(expectedTraining);
+        })
 
-        it('should throw an error if get fails', async () => {
+        it('should throw an error if add student fails', async () => {
             // Arrange
-            const username = 'foo';
-            const password = 'bar';
+            const trainingId = '123';
+            const studentId = '23123';
 
-            const error = new Error();
-            const expectedError = new Error('Error getting company - Company Repository');
-            jest.spyOn(model, 'findOne').mockRejectedValue(error);
+            const error = new Error('Error');
+            const expectedError = new Error('Error');
+            jest.spyOn(model, 'findByIdAndUpdate').mockRejectedValue(error);
 
             // Act
-            const result = repository.getByUsernameAndPassword(username, password);
-
-            // Assert
-            await expect(lastValueFrom(result)).rejects.toThrowError(expectedError);
-        });
-    });
-
-    describe('Get By Email', () => {
-        it('should return a user', async () => {
-            // Arrange
-            const email = 'efpyi@example.com';
-
-            const mockedUser = {
-                _id: '641c70d41964e9445f593bcc',
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
-            };
-
-            const expectedUser = {
-                _id: '641c70d41964e9445f593bcc',
-                name: 'Company',
-                username: 'foo',
-                password: 'bar',
-                email: 'efpyi@example.com',
-            };
-
-            jest.spyOn(model, 'findOne').mockResolvedValue(mockedUser as any);
-
-            // Act
-            const result = repository.getByEmail(email);
-
-            // Assert
-            expect(await lastValueFrom(result)).toEqual(expectedUser);
-        });
-
-        it('should throw an error if get fails', async () => {
-            // Arrange
-            const email = 'efpyi@example.com';
-
-            const error = new Error();
-            const expectedError = new Error('Error getting company - User Repository');
-            jest.spyOn(model, 'findOne').mockRejectedValue(error);
-
-            // Act
-            const result = repository.getByEmail(email);
+            const result = repository.addStudent(trainingId, studentId);
 
             // Assert
             await expect(lastValueFrom(result)).rejects.toThrowError(expectedError);
         });
-    });
+    })
+
+    describe('addRadar', () => {
+        it('should add a radar', async () => {
+            // Arrange
+            const trainingId = '123';
+            const data = {
+                title: 'foo',
+                cicle: 'foo',
+                radar: '1234',
+                coach: 'foo',
+                students: ['23123']
+            };
+
+            const mockTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                radar: '1234',
+                coach: 'foo',
+                students: ['23123']
+            };
+            const expectedTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                radar: '1234',
+                coach: 'foo',
+                students: ['23123']
+            };
+
+            jest.spyOn(model, 'findByIdAndUpdate').mockResolvedValue(mockTraining as any);
+
+            // Act
+            const result = repository.addRadar(trainingId, data);
+
+            // Assert
+            expect(await lastValueFrom(result)).toEqual(expectedTraining);
+        })
+
+        it('should throw an error', async () => {
+            // Arrange
+            const trainingId = '123';
+            const data = {
+                title: 'foo',
+                cicle: 'foo',
+                radar: '1234',
+                coach: 'foo',
+                students: ['23123']
+            };
+
+            const error = new Error('Error');
+            const expectedError = new Error('Error');
+            jest.spyOn(model, 'findByIdAndUpdate').mockRejectedValue(error);
+
+            // Act
+            const result = repository.addRadar(trainingId, data);
+
+            // Assert
+            await expect(lastValueFrom(result)).rejects.toThrowError(expectedError);
+        })
+    })
+
+    describe('Get all trainings', () => {
+        it('should return all trainings', async () => {
+            // Arrange
+            const coachId = '123';
+
+            const mockTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
+                students: ['23123']
+            };
+            const expectedTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
+                students: ['23123']
+            };
+
+            jest.spyOn(model, 'find').mockReturnValue({
+                exec: jest.fn().mockResolvedValue([mockTraining])
+            } as any);
+
+            // Act
+            const result = repository.getAllTrainingLeagues(coachId);
+
+            // Assert
+            expect(await lastValueFrom(result)).toEqual([expectedTraining]);
+        })
+
+        it('should throw an error if get all fails', async () => {
+            // Arrange
+            const coachId = '123';
+
+            const error = new Error('Error');
+            const expectedError = new Error('Error');
+            jest.spyOn(model, 'find').mockReturnValue({
+                exec: jest.fn().mockRejectedValue(error)
+            } as any);
+
+            // Act
+            const result = repository.getAllTrainingLeagues(coachId);
+
+            // Assert
+            await expect(lastValueFrom(result)).rejects.toThrowError(expectedError);
+        });
+    })
+
+    describe('Get training by id', () => {
+        it('should return a  training', async () => {
+            // Arrange
+            const trainingId = '123';
+
+            const mockTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
+                students: ['23123']
+            };
+            const expectedTraining = {
+                title: 'foo',
+                cicle: 'foo',
+                coach: 'foo',
+                students: ['23123']
+            };
+
+            jest.spyOn(model, 'findById').mockReturnValue({
+                populate: jest.fn().mockReturnThis(),
+                exec: jest.fn().mockResolvedValue(mockTraining)
+            } as any);
+
+            // Act
+            const result = repository.getTrainingLeagueById(trainingId);
+
+            // Assert
+            expect(await lastValueFrom(result)).toEqual(expectedTraining);
+        })
+
+        it('should throw an error if get all fails', async () => {
+            // Arrange
+            const trainingId = '123';
+
+            const error = new Error('Error');
+            const expectedError = new Error('Error');
+            jest.spyOn(model, 'findById').mockReturnValue({
+                populate: jest.fn().mockReturnThis(),
+                exec: jest.fn().mockRejectedValue(error)
+            } as any);
+
+            // Act
+            const result = repository.getTrainingLeagueById(trainingId);
+
+            // Assert
+            await expect(lastValueFrom(result)).rejects.toThrowError(expectedError);
+        });
+
+        describe('Get by Title and Cicle', () => {
+            it('should return a trainingLeague', async () => {
+                // Arrange
+                const data: CreateTrainingLeagueDTO = {
+                    title: 'foo',
+                    cicle: 'foo',
+                    coach: 'foo',
+                }
+
+                const mockTraining = {
+                    title: 'foo',
+                    cicle: 'foo',
+                    coach: 'foo',
+                    students: ['23123']
+                };
+                const expectedTraining = {
+                    title: 'foo',
+                    cicle: 'foo',
+                    coach: 'foo',
+                    students: ['23123']
+                };
+
+                jest.spyOn(model, 'findOne').mockReturnValue(of(mockTraining) as any);
+
+                // Act
+                const result = repository.getTrainingLeagueByCicleAndTittle(data);
+
+                // Assert
+                expect(await lastValueFrom(result)).toEqual(expectedTraining);
+            })
+
+            it('should throw an error if get all fails', async () => {
+                // Arrange
+                const data: CreateTrainingLeagueDTO = {
+                    title: 'foo',
+                    cicle: 'foo',
+                    coach: 'foo',
+                }
+
+                const error = new Error('Error');
+                const expectedError = new Error('Error');
+                jest.spyOn(model, 'findOne').mockRejectedValue(error as any);
+
+                // Act
+                const result = repository.getTrainingLeagueByCicleAndTittle(data);
+
+                // Assert
+                await expect(lastValueFrom(result)).rejects.toThrowError(expectedError);
+            });
+        })
+
+        describe('Get by trainingId and StudentId', () => {
+            it('should return true', async () => {
+                // Arrange
+                const trainingId = '123';
+                const studentId = '23123';
+
+                const mockTraining = {
+                    title: 'foo',
+                    cicle: 'foo',
+                    coach: 'foo',
+                    students: ['23123']
+                };
+                const expectedTraining = true
+
+                jest.spyOn(model, 'findOne').mockReturnValue(of(mockTraining) as any);
+
+                // Act
+                const result = repository.getStudentInTrainingLeague(trainingId, studentId);
+
+                // Assert
+                expect(await lastValueFrom(result)).toEqual(expectedTraining);
+            })
+
+
+            it('should return false if the student is not in the training league', async () => {
+                // Arrange
+                const idTraining = '123';
+                const idStudent = '456';
+                const error = new Error('Error');
+                jest.spyOn(model, 'findOne').mockRejectedValue(error as any);
+
+                // Act
+                const result$ = repository.getStudentInTrainingLeague(idTraining, idStudent);
+
+                // Assert
+                expect(await lastValueFrom(result$)).toBe(false);
+            });
+        })
+    })
 });

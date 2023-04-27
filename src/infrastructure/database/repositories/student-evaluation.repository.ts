@@ -82,10 +82,7 @@ export class StudentEvaluationRepository implements IStudentEvaluationRepository
   verifyEvaluation(trainingId: string, studentId: string): Observable<boolean> {
     return from(this.repository.findOne({ trainingLeague: trainingId, student: studentId }))
       .pipe(
-        map((evaluation: StudentEvaluationModel) => evaluation !== null ? true : false),
-        catchError(() => {
-          return of(false)
-        })
+        map((evaluation: StudentEvaluationModel) => evaluation !== null ? true : false)
       )
   }
 
