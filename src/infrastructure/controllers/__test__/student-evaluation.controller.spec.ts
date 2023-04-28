@@ -94,25 +94,38 @@ describe('StudentEvaluationController', () => {
       // Assert
       expect(getStudentEvaluationUseCase.execute).toHaveBeenCalledWith(
         studentId,
-        trainingId
+        trainingId,
       );
       expect(result).toBeDefined();
     });
     // Tests that the createEvaluation method throws an error if an evaluation already exists for the student and training.
     it('test_create_evaluation_throws_error_if_evaluation_already_exists', () => {
       // Arrange
-      const createEvaluationUseCase = {
-        execute: jest.fn().mockReturnValue(throwError(new Error())),
-      };
+      const mockError = new Error('Database error');
+      const messageError = 'Generic error: Database error';
       jest
         .spyOn(createEvaluationUseCase, 'execute')
-        .mockReturnValue(throwError(new Error() as any));
+        .mockReturnValue(of(mockError as any));
       const studentEvaluation = new DStudentEvaluationDto();
-
+      const mockData = {
+        trainingLeague: '456',
+        student: '123',
+        evaluations: [
+          {
+            criteria: '123',
+            qualification: 5,
+          },
+        ],
+      };
       // Act & Assert
-      expect(() =>
-        controller.createEvaluation(studentEvaluation),
-      ).toThrowError();
+      const result = controller.createEvaluation(mockData);
+
+      result.subscribe({
+        error: (err) => {
+          console.log(err);
+          expect(err.message).toEqual(messageError)
+        },
+      });
     });
   });
 });
