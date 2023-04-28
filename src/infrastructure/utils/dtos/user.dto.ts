@@ -1,4 +1,4 @@
-import { RolesEnum } from "src/domain";
+import { RolesEnum } from "../../../domain";
 import { UserDTO } from "../../../domain/dto";
 import { ApiProperty } from "@nestjs/swagger";
 
