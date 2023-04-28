@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CreateTrainingLeagueDTO, ITrainingLeagueRepository, IUserModel, IUserRepository, RolesEnum, TrainingLeagueModel } from "../../../domain";
 import { CreateTrainingLeagueUseCase } from "../create-training-league.use-case";
-import { BadRequestException } from "@nestjs/common";
+import { NotFoundException } from "@nestjs/common";
 import { of, lastValueFrom, throwError } from 'rxjs';
 import { GetAllTrainingsUseCase } from "../get-all-trainings.use-case";
 import { AddStudentUseCase } from "../add-student.use-case";
@@ -115,5 +115,19 @@ describe('Add Student Use Case', () => {
             // Assert
             expect(await lastValueFrom(result)).toEqual(expectedResult);
         });
+
+        it('should throw NotFoundException when getUserByEmail returns empty', async () => {
+            // Arrange
+            const trainingId = 'training123';
+            const emailStudent = 'student@example.com';
+            jest.spyOn(userRepository, 'getUserByEmail').mockReturnValue(throwError(new NotFoundException('User not found')));
+      
+            // Act & Assert
+            const result = useCase.execute(trainingId, emailStudent)
+
+            await expect(lastValueFrom(result)).rejects.toThrow('User not found');
+      
+            // Assert
+          });
     });
 });

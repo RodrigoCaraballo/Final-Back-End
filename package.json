@@ -74,6 +74,16 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/index\\.ts$",
+      "/module\\.ts$",
+      "main.ts",
+      ".module.ts",
+      ".mock.ts",
+      "index.ts",
+      ".config.ts",
+      "<rootDir>/swagger/*"
+    ]
   }
 }
