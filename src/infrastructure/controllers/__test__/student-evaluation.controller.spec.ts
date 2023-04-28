@@ -87,13 +87,14 @@ describe('StudentEvaluationController', () => {
         .spyOn(getStudentEvaluationUseCase, 'execute')
         .mockReturnValue(of({} as any));
       const studentId = '123';
-
+      const trainingId = '456';
       // Act
-      const result = controller.getStudentEvaluation(studentId);
+      const result = controller.getStudentEvaluation(studentId, trainingId);
 
       // Assert
       expect(getStudentEvaluationUseCase.execute).toHaveBeenCalledWith(
         studentId,
+        trainingId
       );
       expect(result).toBeDefined();
     });
