@@ -6,5 +6,5 @@ export interface IUserModel {
     email: string;
     name: string;
     activate: boolean; 
-    role?: RolesEnum
+    role: RolesEnum
 }
